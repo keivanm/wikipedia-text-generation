@@ -24,8 +24,6 @@ def get_stiftstad():
     churches = []
     for r in results['results']['bindings']:
             churches.append(r['churchLabel']['value'])
-    for church in churches:
-        print(church)
     return churches
 
 def get_municipalities_shortname(municipality):
@@ -61,8 +59,6 @@ def get_municipalities():
     for r in results['results']['bindings']:
         if 'capitalLabel' in r:
             municipalities[r['capitalLabel']['value']] = r['municipalityLabel']['value']
-    for municipality in municipalities:
-        print(municipality, ':', municipalities[municipality])
     return municipalities
 
 
@@ -80,39 +76,10 @@ def get_county_residensstad():
     results = sparql.query().convert()
     counties = {}
     for r in results['results']['bindings']:
-            #print('hej')
             if 'capitalLabel' in r:
                 counties[r['capitalLabel']['value']] = r['countyLabel']['value']
-    for county in counties:
-        print(county, ':', counties[county])
     return counties
 
-
-"""def get_cities():
-    sparql = SPARQLWrapper("https://query.wikidata.org/sparql", agent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36')
-    sparql.setQuery(
-    SELECT ?cityLabel ?population WHERE {
-    SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],sv". }
-    VALUES ?town_or_city {
-        wd:Q1549591
-        wd:Q515
-    }
-    ?city wdt:P31 ?town_or_city;
-        wdt:P17 wd:Q34.
-    OPTIONAL { ?city wdt:P1082 ?population. }
-    
-    }
-    )
-    sparql.setReturnFormat(JSON)
-    results = sparql.query().convert()
-    city_pop = {}
-    for r in results['results']['bindings']:
-        if 'population' in r:
-            city_pop[r['cityLabel']['value']] = int(r['population']['value'])
-    city_pop = {k: v for k, v in sorted(city_pop.items(), key=lambda item: item[1], reverse=True)}
-    for city in city_pop:
-        print(city, ':', city_pop[city])
-    return city_pop """
 
 def get_cities():
     sparql = SPARQLWrapper("https://query.wikidata.org/sparql", agent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36')
@@ -135,8 +102,6 @@ def get_cities():
         if 'population' in r:
             city_pop[r['cityLabel']['value']] = int(r['population']['value'])
     city_pop = {k: v for k, v in sorted(city_pop.items(), key=lambda item: item[1], reverse=True)}
-    for city in city_pop:
-        print(city, ':', city_pop[city])
     return city_pop
 
 def get_municipalities_in_counties():
@@ -153,8 +118,6 @@ def get_municipalities_in_counties():
     municipalities = {}
     for r in results['results']['bindings']:
             municipalities[r['municipalityLabel']['value']] = r['countyLabel']['value']
-    #for municipality in municipalities:
-     #   print(municipality, ':', municipalities[municipality])
     return municipalities
 
 
@@ -174,7 +137,6 @@ def get_cities_in_counties():
     sparql.setReturnFormat(JSON)
     results = sparql.query().convert()
     city_municipality = {}
-    #print(results['results']['bindings'])
     for r in results['results']['bindings']:
             city = r['cityLabel']['value']
             
@@ -192,7 +154,6 @@ def get_cities_in_counties():
     city_county = {}
     for city in city_municipality:
         city_county[city] = municipalities_counties[city_municipality[city]]
-        print(city, ':', municipalities_counties[city_municipality[city]])
     
     return city_county
 
@@ -209,7 +170,6 @@ def get_universities():
     sparql.setReturnFormat(JSON)
     results = sparql.query().convert()
     universities = {}
-    #print(results['results']['bindings'])
     for r in results['results']['bindings']:
             university = r['universityLabel']['value']
             
@@ -228,9 +188,7 @@ def get_universities():
                 universities[location].append((university, date))
 
             universities[location]
-    
-    for l in universities:
-        print(l, ": ", universities[l])
+
     
     return universities
 
@@ -315,8 +273,6 @@ def main():
     population = int(population)
     population_old = population
     population = round_population(population)
-    print(population)
-    print(rank)
     municipalities = get_municipalities()
 
     line1_list = []
@@ -333,7 +289,6 @@ def main():
         residensstad = remove_ending_county(residensstad)
         #residensstad = counties[city1].rsplit(' ', 1)[0]
         #residensstad = residensstad[:-1]
-        #print(residensstad)
         residensstad_gf = create_nameobject(residensstad)
         line1_3 = pgf.Expr('Line1_3',[residensstad_gf])
         line1_list.append(line1_3)
@@ -382,19 +337,6 @@ def main():
         
     text = None
 
-    #if rank == 1:
-     #   line2 = pgf.Expr('Line2_storsta',[stad])
-
-
-    #else:
-        #city2 = get_city2(cities, rank)
-        #print(city2)
-        #_,tree = swe.parse("{}".format(rank)).__next__()
-        #tf = int2numeral_in_tree("IntNumber","NumeralNumber",tree)
-        #bj = pgf.readExpr('NumeralNumber "{}"'.format(tf))
-        #print(bj)
-        #bj = pgf.Expr('NumeralNum',[tf])
-        #print(tf)
     universities = get_universities()
     if city1 in universities: 
         universities_in_city = universities[city1]
@@ -428,30 +370,10 @@ def main():
     if rank == 1:
         line3 = pgf.Expr('Line3_largest',[stad, population_gf])
     elif rank < 11:
-        """int_numeral_dict = {"IntNumber": "NumeralNumber", "IntRank": "NumeralRank" }
-        #tree = pgf.Expr('Line3_norank',[stad, inhabitants])
-        _,tree = eng.parse(numerals[rank],cat=pgf.readType('Rank')).__next__()
-        print(tree)
-        t = int2numeral_in_tree(int_numeral_dict, tree)
-        line3 = pgf.Expr('Line3',[stad, t, inhabitants])
-        print(swe.linearize(line3)) """
-        print(population)
-        print(population_old) 
-        print(population_gf)
-        print(swe.linearize(population_gf))
         rank_gf = pgf.Expr('mkNumeral{}'.format(rank),[])
         line3 = pgf.Expr('Line3',[stad, rank_gf, population_gf])
     else:
         line3 = pgf.Expr('Line3_norank',[stad, population_gf])
-        #pgf.readExpr('UniversityObject "{}"'.format(name))
-        #test = pgf.readExpr('IntNumber "{}"'.format(55))
-        #testtree = pgf.Expr('YouHaveMsg',[test])
-    
-
-    #print(test)
-    #print(testtree)
-    
-        #line3 = pgf.Expr('Line3_norank',[stad, inhabitants])
 
 
 
@@ -465,10 +387,7 @@ def main():
    
     print('\n')
     print(fre.linearize(text))
-    """
-    print('\n')
-    print(jpn.linearize(text))
-    """
+
     print('\n')
     print(eng.linearize(text))
 if __name__ == "__main__":
