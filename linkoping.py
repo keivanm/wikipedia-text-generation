@@ -59,6 +59,7 @@ def get_municipalities():
     results = sparql.query().convert()
     municipalities = {}
     for r in results['results']['bindings']:
+        if 'capitalLabel' in r:
             municipalities[r['capitalLabel']['value']] = r['municipalityLabel']['value']
     for municipality in municipalities:
         print(municipality, ':', municipalities[municipality])
