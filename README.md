@@ -1,10 +1,12 @@
 # wikipedia-text-generation
 
-Code for the experiments in my master thesis.
+Code for the experiments presented in my master thesis.
 
 ## Running the code
 
 To run the code follow the instructions below. Keep in mind that the ```linkoping.pgf```file is the GF source code compiled into PGF in order to be used in the Python scripts. If you make any changes to the GF code you need to recompile the code into PGF as well. 
+
+You also need to have the PGF library installed in Python: ```pip install pgf```
 
 ### Generating text for one urban area
 
