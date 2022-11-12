@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- 
 import pgf
-from int2numeral import int2numeral_in_tree
 import sys
 from collections import namedtuple
 from SPARQLWrapper import SPARQLWrapper, JSON
