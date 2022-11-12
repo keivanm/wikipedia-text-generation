@@ -8,6 +8,8 @@ To run the code follow the instructions below. Keep in mind that the ```linkopin
 
 You also need to have the PGF library installed in Python: ```pip install pgf```
 
+**NOTE: PGF does not work properly on the new Mac processors and so you might not be able to install PGF if you have an M1 or later Mac computer.**
+
 ### Generating text for one urban area
 
 To generate a text for an urban area, e.g. Stockholm, run the command
@@ -23,6 +25,6 @@ To generate the texts for 100 random urban areas as seen in the thesis, run the 
 Keep in mind that the script can fail because of various inconsistencies in the queried data. 
 
 
-TODO: 
+**TODO:**
 - Proper naming conventions: the naming in the code isn't the best and could use some work.
 - Add grammars for names
